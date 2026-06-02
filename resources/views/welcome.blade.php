@@ -307,7 +307,7 @@
             }
 
             if (existente) {
-                // Si cambia el stock en servidor, mantenemos el limite actualizado en carrito
+                // Si cambia el stock en servidor, mantener el limite actualizado en carrito
                 existente.stock_max = stockMax;
 
                 if (existente.cantidad >= stockMax) {
@@ -516,7 +516,7 @@
 
                             const infoExtra = IS_ROOT ? `<div class="text-[11px] mt-2 font-semibold text-slate-600">Caduca: ${p.fecha_caducidad || 'N/A'}</div>` : '';
 
-                            // Mostrar el precio con descuento si aplica
+                            // Mostrar el precio con descuento
                             const precioHTML = !esCaducado && p.tiene_descuento
                                 ? `<div class="flex items-center gap-2 mt-3 pt-2 border-t border-amber-100">
                                     <span class="text-sm line-through text-slate-400">${p.precio.toFixed(2)}€</span>

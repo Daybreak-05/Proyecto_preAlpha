@@ -9,11 +9,11 @@ class TiendaController extends Controller
 {
     public function index()
     {
-// 1. Buscamos todas las estanterías en la base de datos
+        
     $estanterias = Estanteria::all();
     $estanterias = \App\Models\Estanteria::all();
 
-    // 2. Las pasamos a la vista usando compact()
+    // Pasamos a la vista usando compact()
     return view('mapa', compact('estanterias'));
     }
 

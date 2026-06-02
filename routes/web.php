@@ -7,16 +7,17 @@ use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\EstanteriaController;
 use Illuminate\Support\Facades\Route;
 
+//Test
+Route::get('/test', function () {
+    return 'OK LARAVEL';
+});
+
 /*
 |--------------------------------------------------------------------------
 | RUTAS PÚBLICAS (CLIENTES)
 |--------------------------------------------------------------------------
 */
 
-//Test
-Route::get('/test', function () {
-    return 'OK LARAVEL';
-});
 Route::view('/sobre-nosotros', 'info.sobre-nosotros')->name('sobre');
 Route::view('/contacto', 'info.contacto')->name('contacto');
 Route::view('/privacidad', 'info.privacidad')->name('privacidad');
@@ -24,7 +25,7 @@ Route::view('/terminos', 'info.terminos')->name('terminos');
 Route::view('/cookies', 'info.cookies')->name('cookies');
 
 
-// Página principal: Tienda y Mapa en gris
+
 Route::get('/', [PublicTiendaController::class, 'index'])->name('index');
 // API para filtrar productos por estantería desde el mapa (AJAX)
 Route::get('/api/estanteria/{id}/productos', [PublicTiendaController::class, 'filtrarPorEstanteria']);

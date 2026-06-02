@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Comando: php artisan make:migration create_estanterias_table
+        
         Schema::create('estanterias', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre'); // Ej: "Pasillo 1 - Lácteos"
-            $table->integer('x');      // Posición horizontal en el SVG
-            $table->integer('y');      // Posición vertical en el SVG
-            $table->integer('ancho');  // Ancho del rectángulo
-            $table->integer('alto');   // Alto del rectángulo
+            $table->string('nombre');
+            $table->integer('x');    
+            $table->integer('y');    
+            $table->integer('ancho');
+            $table->integer('alto'); 
             $table->timestamps();
         });
     }

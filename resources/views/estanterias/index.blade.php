@@ -105,21 +105,21 @@
     const listaProductos = document.getElementById('lista-productos-modal');
 
     async function abrirModalProductos(id, nombreEstanteria) {
-        // 1. Configuramos el texto inicial
+        
         tituloModal.textContent = `Objetos en: ${nombreEstanteria}`;
         listaProductos.innerHTML = '<p class="text-sm text-gray-500 animate-pulse py-4 text-center">Buscando productos en la estantería...</p>';
         
-        // 2. Quitamos el hidden del contenedor principal para que exista en el DOM
+        
         modal.classList.remove('hidden');
         
-        // 3. Activamos las animaciones visuales (opacidad del fondo y escala del popup)
+        
         setTimeout(() => {
             modalBg.classList.remove('opacity-0');
             modalContent.classList.remove('opacity-0', 'scale-95');
         }, 20);
 
         try {
-            // 4. CORREGIDO: Usamos la ruta exacta que está definida en tu web.php
+            
             const response = await fetch(`{{ url('/api/estanteria') }}/${id}/productos`);
             if (!response.ok) throw new Error('Error al cargar productos');
             
@@ -159,20 +159,20 @@
     }
 
     function cerrarModal() {
-        // 1. Añadimos las clases de ocultación para activar la animación de salida suave
+        
         modalBg.classList.add('opacity-0');
         modalContent.classList.add('opacity-0', 'scale-95');
         
-        // 2. Esperamos a que termine la animación (300ms) antes de poner el 'hidden' definitivo
+        
         setTimeout(() => {
             modal.classList.add('hidden');
         }, 300);
     }
 
-    // Cerrar si se hace clic en el fondo oscuro
+    
     modalBg.addEventListener('click', cerrarModal);
 
-    // Permitir cerrar el modal presionando la tecla Escape
+    
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             cerrarModal();

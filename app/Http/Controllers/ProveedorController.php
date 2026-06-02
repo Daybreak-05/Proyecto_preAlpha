@@ -51,14 +51,14 @@ class ProveedorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    // 1. Muestra el formulario con los datos actuales
+    
     public function edit($id)
     {
         $proveedor = \App\Models\Proveedor::findOrFail($id);
         return view('proveedores.edit', compact('proveedor'));
     }
 
-    // 2. Procesa los cambios enviados por el formulario
+    
     public function update(Request $request, $id)
     {
         $request->validate([

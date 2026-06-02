@@ -11,10 +11,10 @@ class EstanteriaController extends Controller
      */
     public function index()
         {
-            // 1. Obtenemos los datos (Asegúrate de que sea en PLURAL)
+            // Obtener los datos 
             $estanterias = Estanteria::all(); 
 
-            // 2. Pasamos la variable a la vista (SIN el símbolo $ dentro de compact)
+            // 2. Pasar la variable a la vista
             return view('estanterias.index', compact('estanterias'));
         }
 
@@ -23,7 +23,7 @@ class EstanteriaController extends Controller
      */
     public function create()
         {
-            // Buscamos todas las estanterías actuales para dibujarlas en el minimapa de referencia
+            // Buscamos todas las estanterías actuales para dibujarlas en el svg
             $estanterias_existentes = Estanteria::all(); 
 
             return view('estanterias.create', compact('estanterias_existentes'));
@@ -64,7 +64,7 @@ class EstanteriaController extends Controller
                 return back()->withErrors(['colision' => "La posición solapa con la estantería: {$existente->nombre}"])->withInput();
             }
         }
-        // --- FIN LÓGICA ---
+        
 
         \App\Models\Estanteria::create($request->all());
         return redirect()->route('estanterias.index')->with('success', 'Estantería creada.');
@@ -80,16 +80,17 @@ class EstanteriaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    // Muestra el formulario con los datos actuales
+
+    // Formulario con los datos actuales
     public function edit(Estanteria $estanteria)
     {
-        // Buscamos todas menos la que estamos editando (para que no se solape consigo misma en el dibujo)
+        // Buscar todas menos la que estamos editando (para que no se solape consigo misma)
         $estanterias_existentes = Estanteria::where('id', '!=', $estanteria->id)->get();
 
         return view('estanterias.edit', compact('estanteria', 'estanterias_existentes'));
     }
 
-    // Procesa la actualización
+    
     public function update(Request $request, Estanteria $estanteria)
     {
         $request->validate([
@@ -111,13 +112,11 @@ class EstanteriaController extends Controller
      */
     public function destroy(string $id)
     {
-        // 1. Buscamos la estantería por su ID en la base de datos
+    // Buscar la estantería por ID en la base de datos
     $estanteria = \App\Models\Estanteria::findOrFail($id);
 
-    // 2. La eliminamos por completo
     $estanteria->delete();
 
-    // 3. Redirigimos de vuelta al listado con un mensaje de éxito
     return redirect()->route('estanterias.index')->with('success', 'Estantería eliminada correctamente del mapa.');
     }
 }

@@ -1,13 +1,13 @@
 <style>
-    /* Mapa en gris para el público */
+   
     .mapa-cliente {
         filter: grayscale(100%);
         opacity: 0.7;
-        pointer-events: none; /* Nadie puede clicar ni ver stock detallado */
+        pointer-events: none;  
     }
     
     .estanteria-publica {
-        fill: #94a3b8; /* Gris azulado */
+        fill: #94a3b8;  
         stroke: #64748b;
     }
 </style>

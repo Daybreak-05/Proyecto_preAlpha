@@ -16,11 +16,6 @@ class Estanteria extends Model
         return $this->hasMany(Producto::class);
     }
 
-    // Un "Accesor" extra (Bonus para tu nota): 
-    // Devuelve true si hay algún producto caducado en esta estantería
-    
-    // Devuelve true si hay algún producto que caduca en los próximos 7 días
-    // (pero que aún NO ha caducado)
     public function getTieneCaducidadProximaAttribute(): bool
     {
         $hoy = Carbon::today();
@@ -34,17 +29,15 @@ class Estanteria extends Model
             ->count() > 0;
     }
 
-    // En App\Models\Estanteria.php
 
     public function getEstaVaciaAttribute(): bool
     {
-        // Usamos count() sobre la relación cargada para que sea eficiente
         return $this->productos->count() === 0;
     }
 
     public function getTieneCaducadosAttribute(): bool
     {
-        // Comprobamos si existe algún producto con fecha anterior a hoy
+        // Comprobar existe algún producto con fecha anterior a hoy
         return $this->productos
             ->filter(function ($p) {
                 if (!$p->fecha_caducidad) return false;

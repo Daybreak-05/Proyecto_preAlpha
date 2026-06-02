@@ -12,14 +12,12 @@ class ProductoController extends Controller
     // Listado de productos (el panel de admin)
     public function index()
     {
-        // Cargamos los productos con su estantería (Eager Loading) para que no falle
+        // Cargamos los productos con su estantería (Eager Loading)
         $productos = \App\Models\Producto::with('estanteria')->get();
         
-        // El punto indica carpetas: admin/productos/index.blade.php
+        // El punto indica la estructura de carpetas (admin/productos/index.blade.php)
         return view('admin.productos.index', compact('productos'));
 
-        // $productos = Producto::with(['estanteria', 'proveedor'])->get();
-        // return view('admin.productos.index', compact('productos'));
     }
 
     // Mostrar el formulario para crear uno nuevo
@@ -29,11 +27,9 @@ class ProductoController extends Controller
         $proveedores = Proveedor::all();
         return view('admin.productos.create', compact('estanterias', 'proveedores'));
     }
-
-    // Guardar el producto en la base de datos
-    
-
+  
     public function store(Request $request)
+
 {
     $request->validate([
         'nombre' => 'required',
@@ -56,12 +52,6 @@ class ProductoController extends Controller
     return redirect()->route('productos.index')
         ->with('success', 'Producto creado con éxito');
 }
-
-
-    //Aquí irían edit, update y destroy...
-
-
-    // Aquí irían edit, update y destroy...
 
     /**
      * Display the specified resource.
@@ -114,7 +104,7 @@ class ProductoController extends Controller
         ->with('success', 'Producto actualizado correctamente');
 }
 
-    //Borrar el producto
+
     public function destroy(Producto $producto)
     {
         $producto->delete();

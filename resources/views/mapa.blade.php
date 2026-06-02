@@ -126,7 +126,7 @@
                 <svg id="mapa-almacen" viewBox="0 0 800 600" class="w-full h-auto border border-dashed rounded-lg mapa-canvas">
                     @foreach($estanterias as $e)
                         @php
-                            // Determinamos el color según el rol
+                            // Determina el color según si es admin
                             $esRoot = Auth::check() && Auth::user()->email === 'root@example.com';
                             $colorRelleno = $esRoot ? $e->color_gestion : '#e5e7eb';
                         @endphp

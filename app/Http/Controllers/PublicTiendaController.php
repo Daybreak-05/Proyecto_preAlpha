@@ -16,19 +16,19 @@ class PublicTiendaController extends Controller
 {
     public function index()
     {
-        // Cargamos las estanterías con sus productos para evitar el error de count
+        // Cargar las estanterías con sus productos para evitar el error de count
         $estanterias = Estanteria::with('productos')->get()->map(function ($e) {
-            // Inicializamos el color por defecto (blanco para usuarios normales)[cite: 7]
+            // Inicializamos el color por defecto (blanco para usuarios normales)
             $e->color_gestion = '#ffffff';
 
             // Lógica de colores solo para el administrador
             if (Auth::check() && Auth::user()->isAdmin()) {
                 if ($e->esta_vacia) {
-                    $e->color_gestion = '#9ca3af'; // Gris si está vacía[cite: 7]
+                    $e->color_gestion = '#9ca3af'; // Gris si está vacía
                 } elseif ($e->tiene_caducados) {
-                    $e->color_gestion = '#ef4444'; // Rojo si hay caducados[cite: 7]
+                    $e->color_gestion = '#ef4444'; // Rojo si hay caducados
                 } elseif ($e->tiene_caducidad_proxima) {
-                    $e->color_gestion = '#f59e0b'; // Naranja si es próxima[cite: 7]
+                    $e->color_gestion = '#f59e0b'; // Naranja si caduca en x < 7 días
                 } else {
                     $e->color_gestion = '#22c55e'; // Verde si todo está bien
                 }
@@ -45,24 +45,24 @@ class PublicTiendaController extends Controller
         $esAdmin = Auth::check() && Auth::user()->isAdmin();
         $hoy = now()->startOfDay();
         
-        // Enriquecemos los productos con información de descuento
         // ADMIN: Ve TODOS los productos
         // CLIENTE: Ve solo NO caducados Y con stock
         $productosConPrecio = $estanteria->productos
             ->filter(function ($producto) use ($esAdmin, $hoy) {
+
                 // Filtrar por stock: todos deben tener stock > 0
                 if ($producto->stock_actual <= 0) {
                     return false;
                 }
                 
-                // Si es admin, mostrar todos los que tienen stock
+                // Mostrar todos los que tienen stock
                 if ($esAdmin) {
                     return true;
                 }
                 
-                // Si es cliente, excluir solo productos YA CADUCADOS
+                // Si es cliente, excluir productos YA CADUCADOS
                 if (!$producto->fecha_caducidad) {
-                    return true; // Sin fecha, mostrar siempre
+                    return true; 
                 }
                 
                 // Comparar fechas directamente: si fecha_caducidad < hoy, está caducado
@@ -71,7 +71,7 @@ class PublicTiendaController extends Controller
             })
             ->map(function ($producto) {
                 return [
-	                        'id' => $producto->id,
+	            'id' => $producto->id,
 			    'nombre' => $producto->nombre,
 			    'codigo_barras' => $producto->codigo_barras,
 			    'stock_actual' => $producto->stock_actual,
@@ -132,7 +132,7 @@ class PublicTiendaController extends Controller
 	    return response()->json(['error' => 'Método de pago no válido'], 422);
 	}
 
-	// NUEVO: Solo validamos si NO está vacío. Si está vacío, se salta la validación.
+	// Solo validamos si NO está vacío. Si está vacío, se salta la validación.
 	if (!empty($correoTicket)) {
 	    if (!filter_var($correoTicket, FILTER_VALIDATE_EMAIL)) {
 	        return response()->json(['error' => 'Introduce un correo válido para enviar el ticket'], 422);
@@ -315,7 +315,6 @@ class PublicTiendaController extends Controller
         }
     }
 
-	    // 1. Añadimos el signo de interrogación (?) antes de string
 	private function crearSesionStripeCheckout(\App\Models\Pedido $pedidoModel, float $total, ?string $correoTicket): array
 	{
 	    $secret = config('services.stripe.secret');
@@ -325,7 +324,7 @@ class PublicTiendaController extends Controller
 	        throw new \RuntimeException('Falta configurar STRIPE_SECRET en el entorno.');
 	    }
 
-	    // 2. Preparamos los datos para Stripe
+
 	    $stripeData = [
 	        'mode' => 'payment',
 	        'client_reference_id' => $pedidoModel->codigo,
@@ -348,7 +347,7 @@ class PublicTiendaController extends Controller
 	        'cancel_url' => route('checkout.stripe.cancel') . '?session_id={CHECKOUT_SESSION_ID}',
 	    ];
 
-	    // 3. NUEVO: Si el usuario SÍ puso correo, se lo añadimos. Si es null, Stripe no lo recibirá y pedirá el correo en su propia pasarela de pago.
+	    // IMPORTANTE: Si el usuario SÍ puso correo, se lo añadimos. Si es null, Stripe no lo recibirá y pedirá el correo en su propia pasarela de pago.
 	    if (!empty($correoTicket)) {
 	        $stripeData['customer_email'] = $correoTicket;
 	    }
@@ -488,7 +487,6 @@ class PublicTiendaController extends Controller
                     }
                 }
             } catch (\Throwable $e) {
-                // Si PayPal no responde, solo devolvemos al checkout.
             }
         }
 
@@ -583,7 +581,6 @@ class PublicTiendaController extends Controller
                     }
                 }
             } catch (\Throwable $e) {
-                // Si Stripe no responde, solo devolvemos al checkout.
             }
         }
 

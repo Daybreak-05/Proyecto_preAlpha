@@ -30,10 +30,10 @@ class Producto extends Model
         return $this->belongsTo(Proveedor::class);
     }
 
-    /**
-     * Determina si el producto está próximo a caducar (dentro de 7 días)
-     * para aplicar descuento
-     */
+    
+    // Determina si el producto está próximo a caducar (dentro de 7 días)
+    // para aplicar descuento
+    
     public function estaProximoACaducar(): bool
     {
         if (!$this->fecha_caducidad) {
@@ -53,20 +53,20 @@ class Producto extends Model
         return $diasHastaVencimiento <= 7;
     }
 
-    /**
-     * Calcula el precio con descuento si está próximo a caducar (30% desc)
-     */
+    
+    // Calcula el precio con descuento si está próximo a caducar (30% desc)
+    
     public function getPrecioConDescuento(): float
     {
         if ($this->estaProximoACaducar()) {
-            return $this->precio * 0.7; // 70% del precio original = 30% descuento
+            return $this->precio * 0.7; // 30% descuento
         }
         return $this->precio;
     }
 
-    /**
-     * Retorna información de precio e descuento para la API
-     */
+    
+    // Retorna información de precio e descuento para la API
+    
     public function getInfoPrecio(): array
     {
         $conDescuento = $this->estaProximoACaducar();
